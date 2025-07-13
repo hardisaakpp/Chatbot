@@ -1,0 +1,1 @@
+# Tests end-to-end para el sistema completo 

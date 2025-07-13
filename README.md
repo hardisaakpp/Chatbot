@@ -87,23 +87,63 @@ ChatbotBasico/
 │   └── responses.json         # Datos iniciales
 ├── frontend/
 │   ├── src/
+│   │   ├── components/
+│   │   │   ├── Chat/          # Componentes del chat
+│   │   │   │   ├── ChatContainer.jsx
+│   │   │   │   ├── MessageList.jsx
+│   │   │   │   ├── MessageInput.jsx
+│   │   │   │   ├── QuickActions.jsx
+│   │   │   │   └── ChatFooter.jsx
+│   │   │   ├── Admin/         # Componentes de administración
+│   │   │   └── common/        # Componentes comunes
+│   │   │       └── Header.jsx
+│   │   ├── hooks/             # Hooks personalizados
+│   │   │   ├── useChat.js
+│   │   │   └── useTheme.js
+│   │   ├── services/          # Servicios de API
+│   │   │   └── api.js
+│   │   ├── utils/             # Utilidades y constantes
+│   │   │   └── constants.js
+│   │   ├── styles/            # Estilos adicionales
 │   │   ├── App.jsx            # Componente principal
 │   │   └── main.jsx           # Punto de entrada
 │   └── package.json
 ├── scripts/
 │   └── migrate_data.py        # Script de migración
-└── tests/                     # Pruebas unitarias
+├── tests/                     # Pruebas organizadas
+│   ├── unit/                  # Tests unitarios
+│   ├── integration/           # Tests de integración
+│   └── e2e/                   # Tests end-to-end
+├── env.example                # Variables de entorno de ejemplo
+├── start.sh                   # Script de inicio
+└── stop.sh                    # Script de parada
 ```
 
 ## 🔧 Configuración
 
 ### Variables de entorno
-Crea un archivo `.env` en el directorio raíz:
+Copia el archivo de ejemplo y configúralo:
+
+```bash
+cp env.example .env
+```
+
+Edita el archivo `.env` con tus configuraciones:
 
 ```env
+# Configuración del Backend
 SECRET_KEY=tu-clave-secreta-aqui
 DATABASE_URL=sqlite:///chatbot.db
 LOG_LEVEL=INFO
+PORT=5002
+
+# Configuración del Frontend
+VITE_API_BASE_URL=http://localhost:5002
+VITE_APP_TITLE=Chatbot Académico
+
+# Configuración de Desarrollo
+NODE_ENV=development
+FLASK_ENV=development
 ```
 
 ### Personalización
