@@ -41,5 +41,31 @@ export const apiService = {
       console.error('Error obteniendo estadísticas:', error);
       throw error;
     }
+  },
+
+  async getCategories() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/categories`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo categorías:', error);
+      throw error;
+    }
+  },
+
+  async getQuestionsByCategory(categoryId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/questions?category_id=${categoryId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo preguntas por categoría:', error);
+      throw error;
+    }
   }
 }; 

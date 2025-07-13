@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
   const { isDark, theme, toggleDarkMode, getDarkModeIcon, getDarkModeLabel } = useTheme();
-  const { messages, isLoading, chatEndRef, sendMessage, askQuestion, clearChat } = useChat();
+  const { messages, isLoading, chatEndRef, sendMessage, askQuestion, clearChat, handleCategoryClick } = useChat();
 
   useEffect(() => {
     // Cambia el atributo data-theme del body para modo oscuro elegante
@@ -32,6 +32,7 @@ function App() {
           onAskQuestion={askQuestion}
           onClearChat={clearChat}
           isLoading={isLoading}
+          onCategoryClick={handleCategoryClick}
         />
       </Box>
     </ThemeProvider>

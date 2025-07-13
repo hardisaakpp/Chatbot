@@ -15,12 +15,13 @@ export const ChatContainer = ({
   onSendMessage, 
   onAskQuestion, 
   onClearChat, 
-  isLoading 
+  isLoading,
+  onCategoryClick
 }) => {
   return (
     <Container maxWidth="sm" sx={{ py: 5 }}>
       <Paper elevation={4} sx={{ p: 0, borderRadius: 3 }}>
-        <MessageList messages={messages} chatEndRef={chatEndRef} />
+        <MessageList messages={messages} chatEndRef={chatEndRef} onCategoryClick={onCategoryClick} />
         <Divider />
         <QuickActions onAskQuestion={onAskQuestion} isLoading={isLoading} />
         <Divider />

@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import ListIcon from '@mui/icons-material/List';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import CalculateIcon from '@mui/icons-material/Calculate';
 import { QUICK_QUESTIONS } from '../../utils/constants';
 
 export const QuickActions = ({ onAskQuestion, isLoading }) => {
@@ -15,16 +14,19 @@ export const QuickActions = ({ onAskQuestion, isLoading }) => {
         return <ListIcon />;
       case 'HelpOutlineIcon':
         return <HelpOutlineIcon />;
-      case 'CalculateIcon':
-        return <CalculateIcon />;
       default:
         return <ListIcon />;
     }
   };
 
+  // Filtrar para mostrar solo los botones de Temas disponibles y ¿Cómo funciona?
+  const filteredQuestions = QUICK_QUESTIONS.filter(q =>
+    q.text !== 'Matemáticas'
+  );
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, p: 2, flexWrap: 'wrap' }}>
-      {QUICK_QUESTIONS.map((item, index) => (
+      {filteredQuestions.map((item, index) => (
         <Button
           key={index}
           variant="outlined"

@@ -14,6 +14,7 @@ export const useChat = () => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]); // Guardar categorías para interacción
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -39,8 +40,62 @@ export const useChat = () => {
     }
   };
 
+  // Botón: Temas disponibles
+  const showCategories = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const cats = await apiService.getCategories();
+      setCategories(cats); // Guardar para interacción
+      if (cats && cats.length > 0) {
+        setMessages(prev => [...prev, { from: 'bot', type: 'categories', categories: cats, text: 'Estos son los temas disponibles:' }]);
+      } else {
+        setMessages(prev => [...prev, { from: 'bot', text: 'No hay temas disponibles en este momento.' }]);
+      }
+    } catch {
+      setMessages(prev => [...prev, { from: 'bot', text: 'No se pudieron obtener los temas disponibles.' }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Botón: ¿Cómo funciona?
+  const showHowItWorks = () => {
+    if (isLoading) return;
+    setMessages(prev => [...prev, { from: 'bot', text: 'Soy un chatbot académico. Puedes preguntarme sobre temas de tecnología, ciencia, matemáticas, programación y más. Simplemente escribe tu pregunta y te responderé con la mejor información disponible. ¡Prueba preguntando sobre inteligencia artificial, bases de datos, o hábitos de estudio!' }]);
+  };
+
+  // Al hacer clic en un tema
+  const handleCategoryClick = async (categoryId, categoryName) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      const questions = await apiService.getQuestionsByCategory(categoryId);
+      if (questions && questions.length > 0) {
+        const list = questions.map(q => `• ${q.question}`).join('\n');
+        setMessages(prev => [...prev, { from: 'bot', text: `Preguntas frecuentes de "${categoryName}":\n${list}` }]);
+      } else {
+        setMessages(prev => [...prev, { from: 'bot', text: `No hay preguntas frecuentes de "${categoryName}" en este momento.` }]);
+      }
+    } catch {
+      setMessages(prev => [...prev, { from: 'bot', text: `No se pudieron obtener las preguntas de "${categoryName}".` }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const askQuestion = async (question) => {
     if (isLoading) return;
+    // Lógica especial para los botones
+    if (question.toLowerCase().includes('temas disponibles')) {
+      await showCategories();
+      return;
+    }
+    if (question.toLowerCase().includes('cómo funciona')) {
+      showHowItWorks();
+      return;
+    }
+    // Por defecto, enviar al backend
     await sendMessage(question);
   };
 
@@ -55,6 +110,7 @@ export const useChat = () => {
         text: SYSTEM_MESSAGES.HELP,
       },
     ]);
+    setCategories([]);
   };
 
   return {
@@ -63,6 +119,8 @@ export const useChat = () => {
     chatEndRef,
     sendMessage,
     askQuestion,
-    clearChat
+    clearChat,
+    categories,
+    handleCategoryClick
   };
 }; 
