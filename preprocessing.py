@@ -7,7 +7,7 @@ from nltk.stem import WordNetLemmatizer, PorterStemmer
 from nltk.util import ngrams
 from collections import Counter
 import difflib
-from typing import List, Dict, Tuple, Set
+from typing import List, Dict, Tuple, Set, Any
 import json
 
 # Descargar recursos necesarios
@@ -256,7 +256,7 @@ class AdvancedTextProcessor:
         ngrams_list = list(ngrams(tokens, n))
         return [' '.join(gram) for gram in ngrams_list]
 
-    def extract_intent(self, text: str) -> Dict[str, any]:
+    def extract_intent(self, text: str) -> Dict[str, Any]:
         """
         Extraer intención del usuario
         """
