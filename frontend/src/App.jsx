@@ -123,6 +123,9 @@ function App() {
     return isDark ? 'Modo claro' : 'Modo oscuro';
   };
 
+  // refs para cada mensaje animado
+  const nodeRefs = useRef([]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -156,33 +159,44 @@ function App() {
                 </Typography>
               </Box>
               <TransitionGroup component={Stack} spacing={1}>
-                {messages.map((msg, idx) => (
-                  <CSSTransition key={idx} timeout={500} classNames="fade-message">
-                    <Box
-                      display="flex"
-                      justifyContent={msg.from === 'user' ? 'flex-end' : 'flex-start'}
-                      alignItems="flex-end"
+                {messages.map((msg, idx) => {
+                  if (!nodeRefs.current[idx]) {
+                    nodeRefs.current[idx] = React.createRef();
+                  }
+                  return (
+                    <CSSTransition
+                      key={idx}
+                      timeout={500}
+                      classNames="fade-message"
+                      nodeRef={nodeRefs.current[idx]}
                     >
-                      {msg.from === 'bot' && (
-                        <Tooltip title="Bot">
-                          <Avatar sx={{ bgcolor: 'primary.main', mr: 1, width: 32, height: 32 }}>
-                            <SmartToyIcon fontSize="small" />
-                          </Avatar>
-                        </Tooltip>
-                      )}
-                      <span className={`bubble ${msg.from}`}>{msg.text}</span>
-                      {msg.from === 'user' && (
-                        <Tooltip title="Tú">
-                          <Avatar sx={{ bgcolor: 'secondary.main', ml: 1, width: 32, height: 32 }}>
-                            U
-                          </Avatar>
-                        </Tooltip>
-                      )}
-                    </Box>
-                  </CSSTransition>
-                ))}
-                <div ref={chatEndRef} />
+                      <Box
+                        ref={nodeRefs.current[idx]}
+                        display="flex"
+                        justifyContent={msg.from === 'user' ? 'flex-end' : 'flex-start'}
+                        alignItems="flex-end"
+                      >
+                        {msg.from === 'bot' && (
+                          <Tooltip title="Bot">
+                            <Avatar sx={{ bgcolor: 'primary.main', mr: 1, width: 32, height: 32 }}>
+                              <SmartToyIcon fontSize="small" />
+                            </Avatar>
+                          </Tooltip>
+                        )}
+                        <span className={`bubble ${msg.from}`}>{msg.text}</span>
+                        {msg.from === 'user' && (
+                          <Tooltip title="Tú">
+                            <Avatar sx={{ bgcolor: 'secondary.main', ml: 1, width: 32, height: 32 }}>
+                              U
+                            </Avatar>
+                          </Tooltip>
+                        )}
+                      </Box>
+                    </CSSTransition>
+                  );
+                })}
               </TransitionGroup>
+              <div ref={chatEndRef} />
             </Box>
             <Divider />
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, p: 2, flexWrap: 'wrap' }}>
