@@ -66,14 +66,16 @@ function App() {
     }), [isDark]);
 
   useEffect(() => {
+    // Cambia el atributo data-theme del body para modo oscuro elegante
+    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages, isDark]);
 
   const handleSend = () => {
     if (input.trim() === '') return;
-    setMessages([...messages, { from: 'user', text: input }]);
+    setMessages(prevMessages => [...prevMessages, { from: 'user', text: input }]);
     setInput('');
     // Aquí luego se conectará con el backend Flask
   };
@@ -83,12 +85,21 @@ function App() {
   };
 
   const askQuestion = (question) => {
-    setMessages([...messages, { from: 'user', text: question }]);
+    setMessages(prevMessages => [...prevMessages, { from: 'user', text: question }]);
     // Aquí luego se conectará con el backend Flask
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([
+      {
+        from: 'bot',
+        text: '¡Hola! Soy tu asistente académico',
+      },
+      {
+        from: 'bot',
+        text: 'Puedo ayudarte con preguntas sobre diversos temas. ¿En qué puedo asistirte hoy?',
+      },
+    ]);
   };
 
   // Alternar dark mode manualmente o seguir sistema
@@ -115,7 +126,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Box sx={{ bgcolor: 'background.default' }}>
         <AppBar position="static" color="primary">
           <Toolbar>
             <SmartToyIcon sx={{ mr: 1 }} />
@@ -146,10 +157,11 @@ function App() {
               </Box>
               <TransitionGroup component={Stack} spacing={1}>
                 {messages.map((msg, idx) => (
-                  <CSSTransition key={idx} timeout={350} classNames="fade-message">
+                  <CSSTransition key={idx} timeout={500} classNames="fade-message">
                     <Box
                       display="flex"
                       justifyContent={msg.from === 'user' ? 'flex-end' : 'flex-start'}
+                      alignItems="flex-end"
                     >
                       {msg.from === 'bot' && (
                         <Tooltip title="Bot">
@@ -158,19 +170,7 @@ function App() {
                           </Avatar>
                         </Tooltip>
                       )}
-                      <Box
-                        sx={{
-                          bgcolor: msg.from === 'user' ? 'primary.main' : 'grey.300',
-                          color: msg.from === 'user' ? 'white' : 'black',
-                          px: 2,
-                          py: 1,
-                          borderRadius: 2,
-                          maxWidth: '75%',
-                          wordBreak: 'break-word',
-                        }}
-                      >
-                        {msg.text}
-                      </Box>
+                      <span className={`bubble ${msg.from}`}>{msg.text}</span>
                       {msg.from === 'user' && (
                         <Tooltip title="Tú">
                           <Avatar sx={{ bgcolor: 'secondary.main', ml: 1, width: 32, height: 32 }}>
