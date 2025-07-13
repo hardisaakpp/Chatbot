@@ -10,6 +10,7 @@ from backend.models import db, User
 from backend.utils.preprocessing import processor
 from backend.database.database_service import DatabaseService
 from backend.admin import init_admin
+from backend.routes.chatbot_routes import chatbot_bp
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -32,6 +33,10 @@ def create_app(config_name='development'):
     app.secret_key = app.config['SECRET_KEY']
     # Inicializar panel de administración
     init_admin(app)
+    
+    # Registrar blueprints
+    app.register_blueprint(chatbot_bp)
+    
     return app
 
 app = create_app()

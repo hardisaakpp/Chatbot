@@ -1,21 +1,20 @@
 #!/bin/bash
 
-# Script de inicio rápido para el Chatbot Académico
-echo "🚀 Iniciando Chatbot Académico..."
+echo "🚀 Iniciando Chatbot Académico Inteligente..."
 
-# Verificar que Python esté instalado
+# Verificar si Python está instalado
 if ! command -v python3 &> /dev/null; then
     echo "❌ Error: Python 3 no está instalado"
     exit 1
 fi
 
-# Verificar que Node.js esté instalado
+# Verificar si Node.js está instalado
 if ! command -v node &> /dev/null; then
     echo "❌ Error: Node.js no está instalado"
     exit 1
 fi
 
-# Verificar que npm esté instalado
+# Verificar si npm está instalado
 if ! command -v npm &> /dev/null; then
     echo "❌ Error: npm no está instalado"
     exit 1
@@ -23,62 +22,47 @@ fi
 
 echo "✅ Dependencias verificadas"
 
-# Función para limpiar procesos al salir
-cleanup() {
-    echo "🛑 Deteniendo servicios..."
-    pkill -f "python.*app.py"
-    pkill -f "npm.*dev"
-    exit 0
-}
-
-# Capturar Ctrl+C para limpiar procesos
-trap cleanup SIGINT
-
-# Iniciar backend
-echo "🔧 Iniciando backend..."
-cd backend
-python app.py &
-BACKEND_PID=$!
-cd ..
-
-# Esperar un momento para que el backend se inicie
-sleep 3
-
-# Verificar que el backend esté funcionando
-if curl -s http://localhost:5002 > /dev/null; then
-    echo "✅ Backend iniciado correctamente en http://localhost:5002"
-else
-    echo "❌ Error: No se pudo iniciar el backend"
-    cleanup
+# Crear entorno virtual si no existe
+if [ ! -d "venv" ]; then
+    echo "📦 Creando entorno virtual..."
+    python3 -m venv venv
 fi
 
-# Iniciar frontend
-echo "🎨 Iniciando frontend..."
+# Activar entorno virtual
+echo "🔧 Activando entorno virtual..."
+source venv/bin/activate
+
+# Instalar dependencias de Python
+echo "📥 Instalando dependencias de Python..."
+pip install -r requirements.txt
+
+# Verificar si la base de datos existe
+if [ ! -f "backend/chatbot.db" ]; then
+    echo "🗄️  Inicializando base de datos..."
+    python scripts/populate_database.py
+else
+    echo "✅ Base de datos ya existe"
+fi
+
+# Instalar dependencias del frontend
+echo "📥 Instalando dependencias del frontend..."
 cd frontend
-npm run dev &
-FRONTEND_PID=$!
+npm install
 cd ..
 
-# Esperar un momento para que el frontend se inicie
-sleep 5
-
-# Verificar que el frontend esté funcionando
-if curl -s http://localhost:5173 > /dev/null; then
-    echo "✅ Frontend iniciado correctamente en http://localhost:5173"
-else
-    echo "❌ Error: No se pudo iniciar el frontend"
-    cleanup
-fi
-
+echo "🎉 Configuración completada!"
 echo ""
-echo "🎉 ¡Chatbot Académico iniciado exitosamente!"
+echo "📋 Para ejecutar el proyecto:"
+echo "   1. Terminal 1 (Backend): python backend/app.py"
+echo "   2. Terminal 2 (Frontend): cd frontend && npm run dev"
 echo ""
-echo "📱 Frontend: http://localhost:5173"
-echo "🔧 Backend:  http://localhost:5002"
-echo "👨‍💼 Admin:    http://localhost:5002/admin (admin/admin123)"
+echo "🌐 URLs:"
+echo "   • Frontend: http://localhost:5173"
+echo "   • Backend API: http://localhost:5002"
+echo "   • Panel Admin: http://localhost:5002/admin"
 echo ""
-echo "💡 Presiona Ctrl+C para detener todos los servicios"
+echo "🔑 Credenciales de administrador:"
+echo "   • Usuario: admin"
+echo "   • Contraseña: admin123"
 echo ""
-
-# Mantener el script ejecutándose
-wait 
+echo "✨ ¡Listo para usar!" 

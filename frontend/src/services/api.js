@@ -67,5 +67,52 @@ export const apiService = {
       console.error('Error obteniendo preguntas por categoría:', error);
       throw error;
     }
+  },
+
+  async submitFeedback(feedbackData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedbackData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error enviando feedback:', error);
+      throw error;
+    }
+  },
+
+  async getSuggestions(sessionId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/suggestions?session_id=${sessionId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo sugerencias:', error);
+      throw error;
+    }
+  },
+
+  async getAnalytics() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/analytics`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error obteniendo analytics:', error);
+      throw error;
+    }
   }
 }; 

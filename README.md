@@ -1,37 +1,55 @@
-# Chatbot Académico
+# 🤖 Chatbot Académico Inteligente
 
-Un chatbot inteligente desarrollado con React (frontend) y Flask (backend) que puede responder preguntas sobre temas académicos y tecnológicos.
+Un chatbot inteligente para asistencia académica con base de datos completa, analytics y sistema de feedback.
 
-## 🚀 Características
+## ✨ Características Principales
 
-- **Interfaz moderna**: Diseño responsive con Material-UI
-- **Base de datos SQLite**: Almacenamiento persistente de preguntas y respuestas
-- **Procesamiento de lenguaje natural**: Análisis de intenciones y palabras clave
-- **Sistema de categorías**: Organización temática de preguntas
-- **Panel de administración**: Gestión de preguntas y estadísticas
-- **Modo oscuro/claro**: Interfaz adaptable a preferencias del usuario
+### 🗄️ **Base de Datos Completa**
+- **Gestión de Preguntas y Respuestas**: Sistema completo de Q&A con categorías
+- **Tracking de Conversaciones**: Historial completo de chats con análisis de intenciones
+- **Sistema de Usuarios**: Autenticación y roles (admin/usuario)
+- **Estadísticas Automáticas**: Métricas de uso y rendimiento en tiempo real
+- **Panel de Administración**: Interfaz completa para gestionar datos
 
-## 📋 Requisitos
+### 🎯 **Funcionalidades Avanzadas**
+- **Sistema de Feedback**: Los usuarios pueden calificar respuestas (1-5 estrellas)
+- **Sugerencias Inteligentes**: Preguntas recomendadas basadas en el historial
+- **Analytics Detallados**: Dashboard completo con métricas y tendencias
+- **Mejora Continua**: Las respuestas mejoran automáticamente con el feedback
+- **Categorización**: Organización por temas (Matemáticas, Historia, Ciencia, etc.)
 
+### 📊 **Analytics y Reportes**
+- **Métricas en Tiempo Real**: Usuarios, conversaciones, mensajes
+- **Análisis de Rendimiento**: Preguntas más populares y mejor calificadas
+- **Tendencias Temporales**: Estadísticas de los últimos 7 días
+- **Distribución de Intenciones**: Análisis de tipos de consultas
+- **Exportación de Datos**: Para análisis externo
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
 - Python 3.8+
-- Node.js 18+
-- npm o yarn
-
-## 🛠️ Instalación
+- Node.js 16+
+- SQLite (incluido) o PostgreSQL/MySQL
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <url-del-repositorio>
+git clone <repository-url>
 cd ChatbotBasico
 ```
 
 ### 2. Configurar el backend
 ```bash
-# Instalar dependencias de Python
+# Crear entorno virtual
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# Instalar dependencias
 pip install -r requirements.txt
 
-# Inicializar la base de datos
-python scripts/migrate_data.py
+# Configurar variables de entorno
+cp env.example .env
+# Editar .env con tus configuraciones
 ```
 
 ### 3. Configurar el frontend
@@ -40,136 +58,200 @@ cd frontend
 npm install
 ```
 
-## 🚀 Ejecución
-
-### 1. Iniciar el backend
+### 4. Poblar la base de datos con datos de ejemplo
 ```bash
-cd backend
-python app.py
+# Desde la raíz del proyecto
+python scripts/populate_database.py
 ```
-El backend estará disponible en: http://localhost:5002
 
-### 2. Iniciar el frontend
+### 5. Ejecutar el proyecto
 ```bash
+# Terminal 1: Backend
+python backend/app.py
+
+# Terminal 2: Frontend
 cd frontend
 npm run dev
 ```
-El frontend estará disponible en: http://localhost:5173
 
-## 📖 Uso
-
-### Para usuarios
-1. Abre http://localhost:5173 en tu navegador
-2. Escribe tu pregunta en el campo de texto
-3. Presiona Enter o haz clic en el botón de enviar
-4. El chatbot responderá basándose en su base de conocimientos
-
-### Para administradores
-1. Accede a http://localhost:5002/admin
-2. Usuario: `admin`
-3. Contraseña: `admin123`
-4. Gestiona preguntas, categorías y revisa estadísticas
-
-## 🗂️ Estructura del proyecto
+## 📋 Estructura del Proyecto
 
 ```
 ChatbotBasico/
 ├── backend/
 │   ├── app.py                 # Aplicación principal Flask
 │   ├── models.py              # Modelos de base de datos
-│   ├── config.py              # Configuración
+│   ├── admin.py               # Panel de administración
 │   ├── database/
 │   │   └── database_service.py # Servicio de base de datos
-│   ├── services/
-│   │   └── chatbot_service.py # Servicio del chatbot
-│   ├── utils/
-│   │   └── preprocessing.py   # Procesamiento de texto
-│   └── responses.json         # Datos iniciales
+│   ├── routes/
+│   │   └── chatbot_routes.py  # Rutas del chatbot
+│   └── utils/
+│       └── preprocessing.py   # Procesamiento de texto
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Chat/          # Componentes del chat
-│   │   │   │   ├── ChatContainer.jsx
-│   │   │   │   ├── MessageList.jsx
-│   │   │   │   ├── MessageInput.jsx
-│   │   │   │   ├── QuickActions.jsx
-│   │   │   │   └── ChatFooter.jsx
-│   │   │   ├── Admin/         # Componentes de administración
-│   │   │   └── common/        # Componentes comunes
-│   │   │       └── Header.jsx
-│   │   ├── hooks/             # Hooks personalizados
-│   │   │   ├── useChat.js
-│   │   │   └── useTheme.js
-│   │   ├── services/          # Servicios de API
-│   │   │   └── api.js
-│   │   ├── utils/             # Utilidades y constantes
-│   │   │   └── constants.js
-│   │   ├── styles/            # Estilos adicionales
-│   │   ├── App.jsx            # Componente principal
-│   │   └── main.jsx           # Punto de entrada
+│   │   │   └── Admin/         # Componentes de administración
+│   │   ├── services/
+│   │   │   └── api.js         # Servicios de API
+│   │   └── hooks/
+│   │       └── useChat.js     # Hook personalizado
 │   └── package.json
 ├── scripts/
-│   └── migrate_data.py        # Script de migración
-├── tests/                     # Pruebas organizadas
-│   ├── unit/                  # Tests unitarios
-│   ├── integration/           # Tests de integración
-│   └── e2e/                   # Tests end-to-end
-├── env.example                # Variables de entorno de ejemplo
-├── start.sh                   # Script de inicio
-└── stop.sh                    # Script de parada
+│   └── populate_database.py   # Script para datos de ejemplo
+└── README.md
 ```
 
-## 🔧 Configuración
+## 🗄️ Modelos de Base de Datos
 
-### Variables de entorno
-Copia el archivo de ejemplo y configúralo:
+### Usuarios (`users`)
+- Gestión de usuarios con roles (admin/usuario)
+- Autenticación segura con hash de contraseñas
+- Tracking de actividad y último login
 
+### Categorías (`categories`)
+- Organización de preguntas por temas
+- Iconos y colores personalizables
+- Descripciones detalladas
+
+### Preguntas (`questions`)
+- Preguntas y respuestas con metadatos
+- Palabras clave y sinónimos
+- Niveles de dificultad
+- Contador de uso y puntuación de precisión
+
+### Conversaciones (`conversations`)
+- Historial completo de chats
+- Tracking de sesiones
+- Metadatos de conversación
+
+### Mensajes (`messages`)
+- Mensajes individuales con análisis
+- Detección de intenciones
+- Feedback de usuarios
+- Tiempo de respuesta
+
+### Estadísticas (`chatbot_stats`)
+- Métricas diarias automáticas
+- Tendencias temporales
+- Análisis de rendimiento
+
+## 🔧 API Endpoints
+
+### Chat
+- `POST /get_response` - Obtener respuesta del chatbot
+- `POST /api/feedback` - Enviar feedback de usuario
+- `GET /api/suggestions` - Obtener sugerencias de preguntas
+
+### Administración
+- `GET /api/analytics` - Analytics detallados (solo admin)
+- `GET /api/export` - Exportar datos (solo admin)
+- `GET /api/stats` - Estadísticas básicas
+- `GET /api/categories` - Listar categorías
+- `GET /api/questions` - Listar preguntas por categoría
+
+### Gestión de Contenido
+- `POST /api/questions` - Agregar nueva pregunta
+- `PUT /api/questions/{id}` - Actualizar pregunta
+- `DELETE /api/questions/{id}` - Eliminar pregunta
+
+## 📊 Dashboard de Analytics
+
+### Métricas Generales
+- **Usuarios Totales**: Número total de usuarios registrados
+- **Conversaciones**: Total de conversaciones iniciadas
+- **Mensajes**: Total de mensajes intercambiados
+- **Preguntas**: Total de preguntas en la base de datos
+
+### Análisis Detallado
+- **Preguntas Populares**: Más utilizadas por los usuarios
+- **Mejor Calificadas**: Con mayor puntuación de precisión
+- **Necesitan Mejora**: Con baja puntuación
+- **Distribución de Intenciones**: Tipos de consultas más comunes
+- **Tendencias Temporales**: Evolución en los últimos 7 días
+
+## 🎯 Sistema de Feedback
+
+### Características
+- **Calificación con Estrellas**: Sistema 1-5 estrellas
+- **Comentarios Opcionales**: Feedback textual detallado
+- **Mejora Automática**: Las respuestas mejoran con el feedback
+- **Análisis de Satisfacción**: Métricas de satisfacción del usuario
+
+### Flujo de Feedback
+1. Usuario recibe respuesta del chatbot
+2. Se muestra opción para calificar la respuesta
+3. Usuario puede dar 1-5 estrellas y comentario opcional
+4. El sistema actualiza la precisión de la pregunta
+5. Los datos se usan para mejorar futuras respuestas
+
+## 🔐 Panel de Administración
+
+### Acceso
+- URL: `http://localhost:5002/admin`
+- Usuario: `admin`
+- Contraseña: `admin123`
+
+### Funcionalidades
+- **Gestión de Usuarios**: Crear, editar, eliminar usuarios
+- **Gestión de Categorías**: Organizar preguntas por temas
+- **Gestión de Preguntas**: CRUD completo de Q&A
+- **Análisis de Conversaciones**: Revisar chats de usuarios
+- **Logs del Sistema**: Monitoreo de errores y actividad
+- **Estadísticas**: Métricas detalladas del sistema
+
+## 🚀 Funcionalidades Avanzadas
+
+### Sugerencias Inteligentes
+- **Basadas en Popularidad**: Preguntas más utilizadas
+- **Basadas en Historial**: Relacionadas con conversaciones previas
+- **Personalización**: Adaptadas al contexto del usuario
+
+### Mejora Continua
+- **Aprendizaje Automático**: El sistema mejora con el uso
+- **Análisis de Patrones**: Identificación de tendencias
+- **Optimización de Respuestas**: Mejora de precisión
+
+### Exportación de Datos
+- **Formatos Soportados**: JSON, CSV
+- **Tipos de Datos**: Conversaciones, mensajes, preguntas
+- **Análisis Externo**: Para herramientas de BI
+
+## 🛠️ Desarrollo
+
+### Agregar Nueva Funcionalidad
+1. Crear modelo en `backend/models.py`
+2. Agregar métodos en `backend/database/database_service.py`
+3. Crear rutas en `backend/routes/`
+4. Desarrollar componentes frontend
+5. Actualizar documentación
+
+### Testing
 ```bash
-cp env.example .env
-```
-
-Edita el archivo `.env` con tus configuraciones:
-
-```env
-# Configuración del Backend
-SECRET_KEY=tu-clave-secreta-aqui
-DATABASE_URL=sqlite:///chatbot.db
-LOG_LEVEL=INFO
-PORT=5002
-
-# Configuración del Frontend
-VITE_API_BASE_URL=http://localhost:5002
-VITE_APP_TITLE=Chatbot Académico
-
-# Configuración de Desarrollo
-NODE_ENV=development
-FLASK_ENV=development
-```
-
-### Personalización
-- **Preguntas**: Agrega nuevas preguntas desde el panel de administración
-- **Categorías**: Crea nuevas categorías para organizar el contenido
-- **Estilo**: Modifica los estilos en `frontend/src/App.css`
-
-## 🧪 Pruebas
-
-```bash
-# Ejecutar pruebas del backend
+# Ejecutar tests
 python -m pytest tests/
 
-# Ejecutar pruebas del frontend
-cd frontend
-npm test
+# Tests específicos
+python -m pytest tests/unit/
+python -m pytest tests/integration/
 ```
 
-## 📊 Estadísticas
+## 📈 Roadmap
 
-El sistema recopila automáticamente:
-- Número total de conversaciones
-- Mensajes por sesión
-- Tiempo de respuesta promedio
-- Puntuación de confianza
-- Preguntas más populares
+### Próximas Funcionalidades
+- [ ] **Integración con IA**: OpenAI, GPT, etc.
+- [ ] **Multilingüe**: Soporte para múltiples idiomas
+- [ ] **Chat en Tiempo Real**: WebSockets para chat en vivo
+- [ ] **Análisis de Sentimientos**: Detección de emociones
+- [ ] **Integración con LMS**: Moodle, Canvas, etc.
+- [ ] **API Pública**: Para integraciones externas
+
+### Mejoras Técnicas
+- [ ] **Caché Redis**: Para mejor rendimiento
+- [ ] **Microservicios**: Arquitectura escalable
+- [ ] **Docker**: Containerización completa
+- [ ] **CI/CD**: Pipeline de despliegue automático
 
 ## 🤝 Contribución
 
@@ -179,22 +261,16 @@ El sistema recopila automáticamente:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📝 Licencia
+## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-## 🆘 Soporte
+## 📞 Soporte
 
-Si encuentras algún problema:
-1. Revisa los logs del backend en la consola
-2. Verifica que ambos servicios estén ejecutándose
-3. Asegúrate de que la base de datos esté inicializada
-4. Revisa la consola del navegador para errores del frontend
+- **Email**: soporte@chatbot.com
+- **Documentación**: [Wiki del proyecto]
+- **Issues**: [GitHub Issues]
 
-## 🔄 Actualizaciones
+---
 
-Para actualizar el sistema:
-1. Detén ambos servicios
-2. Ejecuta `git pull` para obtener los últimos cambios
-3. Ejecuta `python scripts/migrate_data.py` si hay cambios en la base de datos
-4. Reinicia ambos servicios
+**¡Gracias por usar nuestro Chatbot Académico Inteligente! 🎓**

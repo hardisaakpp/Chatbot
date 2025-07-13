@@ -412,4 +412,215 @@ class DatabaseService:
             
         except Exception as e:
             DatabaseService._log_error(f"Error guardando estadísticas diarias: {str(e)}")
-            db.session.rollback() 
+            db.session.rollback()
+
+    @staticmethod
+    def get_question_suggestions(session_id: str, limit: int = 5) -> List[Dict]:
+        """
+        Obtener sugerencias de preguntas basadas en el historial
+        """
+        try:
+            suggestions = []
+            
+            # Obtener preguntas populares
+            popular_questions = Question.query.filter_by(is_active=True)\
+                .order_by(Question.usage_count.desc())\
+                .limit(3).all()
+            
+            for question in popular_questions:
+                suggestions.append({
+                    'id': question.id,
+                    'question': question.question_text,
+                    'type': 'popular',
+                    'usage_count': question.usage_count
+                })
+            
+            # Obtener preguntas relacionadas basadas en el historial reciente
+            recent_messages = Message.query.join(Conversation)\
+                .filter(Conversation.session_id == session_id)\
+                .order_by(Message.timestamp.desc())\
+                .limit(10).all()
+            
+            if recent_messages:
+                # Extraer keywords del historial reciente
+                recent_keywords = []
+                for msg in recent_messages:
+                    if msg.keywords_extracted:
+                        recent_keywords.extend(msg.keywords_extracted.split(', '))
+                
+                # Buscar preguntas relacionadas
+                if recent_keywords:
+                    related_questions = Question.query.filter_by(is_active=True)\
+                        .filter(Question.keywords.contains(recent_keywords[0]))\
+                        .limit(2).all()
+                    
+                    for question in related_questions:
+                        if question.id not in [s['id'] for s in suggestions]:
+                            suggestions.append({
+                                'id': question.id,
+                                'question': question.question_text,
+                                'type': 'related',
+                                'category': question.category.name if question.category else 'Sin categoría'
+                            })
+            
+            return suggestions[:limit]
+            
+        except Exception as e:
+            DatabaseService._log_error(f"Error obteniendo sugerencias: {str(e)}")
+            return []
+
+    @staticmethod
+    def get_detailed_analytics() -> Dict:
+        """
+        Obtener analytics detallados para administradores
+        """
+        try:
+            # Estadísticas generales
+            total_users = User.query.count()
+            active_users = User.query.filter_by(is_active=True).count()
+            total_questions = Question.query.filter_by(is_active=True).count()
+            total_conversations = Conversation.query.count()
+            total_messages = Message.query.count()
+            
+            # Preguntas más populares
+            popular_questions = Question.query.filter_by(is_active=True)\
+                .order_by(Question.usage_count.desc())\
+                .limit(10).all()
+            
+            # Preguntas con mejor rating
+            best_rated_questions = Question.query.filter_by(is_active=True)\
+                .filter(Question.accuracy_score > 0)\
+                .order_by(Question.accuracy_score.desc())\
+                .limit(10).all()
+            
+            # Preguntas que necesitan mejora
+            needs_improvement = Question.query.filter_by(is_active=True)\
+                .filter(Question.accuracy_score < 0.5)\
+                .order_by(Question.accuracy_score.asc())\
+                .limit(10).all()
+            
+            # Estadísticas de intenciones
+            intent_stats = db.session.query(
+                Message.intent_detected,
+                db.func.count(Message.id)
+            ).group_by(Message.intent_detected).all()
+            
+            # Tendencias temporales (últimos 7 días)
+            from datetime import timedelta
+            seven_days_ago = datetime.utcnow() - timedelta(days=7)
+            
+            daily_stats = ChatbotStats.query.filter(
+                ChatbotStats.date >= seven_days_ago.date()
+            ).order_by(ChatbotStats.date).all()
+            
+            return {
+                'general': {
+                    'total_users': total_users,
+                    'active_users': active_users,
+                    'total_questions': total_questions,
+                    'total_conversations': total_conversations,
+                    'total_messages': total_messages
+                },
+                'popular_questions': [
+                    {
+                        'id': q.id,
+                        'question': q.question_text,
+                        'usage_count': q.usage_count,
+                        'accuracy': q.accuracy_score
+                    } for q in popular_questions
+                ],
+                'best_rated': [
+                    {
+                        'id': q.id,
+                        'question': q.question_text,
+                        'accuracy': q.accuracy_score
+                    } for q in best_rated_questions
+                ],
+                'needs_improvement': [
+                    {
+                        'id': q.id,
+                        'question': q.question_text,
+                        'accuracy': q.accuracy_score
+                    } for q in needs_improvement
+                ],
+                'intent_distribution': [
+                    {
+                        'intent': intent,
+                        'count': count
+                    } for intent, count in intent_stats
+                ],
+                'daily_trends': [
+                    {
+                        'date': str(stat.date),
+                        'conversations': stat.total_conversations,
+                        'messages': stat.total_messages,
+                        'users': stat.unique_users
+                    } for stat in daily_stats
+                ]
+            }
+            
+        except Exception as e:
+            DatabaseService._log_error(f"Error obteniendo analytics: {str(e)}")
+            return {}
+
+    @staticmethod
+    def export_data(data_type: str = 'conversations') -> Dict:
+        """
+        Exportar datos para análisis externo
+        """
+        try:
+            if data_type == 'conversations':
+                conversations = Conversation.query.all()
+                data = [
+                    {
+                        'id': c.id,
+                        'session_id': c.session_id,
+                        'started_at': c.started_at.isoformat() if c.started_at else None,
+                        'ended_at': c.ended_at.isoformat() if c.ended_at else None,
+                        'total_messages': c.total_messages,
+                        'language': c.language
+                    } for c in conversations
+                ]
+            
+            elif data_type == 'messages':
+                messages = Message.query.all()
+                data = [
+                    {
+                        'id': m.id,
+                        'conversation_id': m.conversation_id,
+                        'user_input': m.user_input,
+                        'bot_response': m.bot_response,
+                        'intent_detected': m.intent_detected,
+                        'confidence_score': m.confidence_score,
+                        'user_rating': m.user_rating,
+                        'timestamp': m.timestamp.isoformat() if m.timestamp else None
+                    } for m in messages
+                ]
+            
+            elif data_type == 'questions':
+                questions = Question.query.all()
+                data = [
+                    {
+                        'id': q.id,
+                        'question_text': q.question_text,
+                        'answer_text': q.answer_text,
+                        'category': q.category.name if q.category else None,
+                        'usage_count': q.usage_count,
+                        'accuracy_score': q.accuracy_score,
+                        'difficulty_level': q.difficulty_level
+                    } for q in questions
+                ]
+            
+            else:
+                return {'error': 'Tipo de datos no válido'}
+            
+            return {
+                'type': data_type,
+                'count': len(data),
+                'exported_at': datetime.utcnow().isoformat(),
+                'data': data
+            }
+            
+        except Exception as e:
+            DatabaseService._log_error(f"Error exportando datos: {str(e)}")
+            return {'error': 'Error exportando datos'}
