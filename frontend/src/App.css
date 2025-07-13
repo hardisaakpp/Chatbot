@@ -10,6 +10,23 @@ body {
   background: linear-gradient(120deg, #e3f0ff 0%, #f5eaff 100%);
 }
 
+/* Animaciones globales */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .fade-message-enter {
   opacity: 0;
   transform: translateY(30px) scale(0.95);
@@ -90,27 +107,107 @@ body {
   background: #d32f2f;
 }
 
-/* Modo oscuro más elegante */
+/* ===== MODO OSCURO ELEGANTE MEJORADO ===== */
 body[data-theme='dark'] {
-  background: linear-gradient(120deg, #232526 0%, #414345 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 25%, #2d1b69 50%, #1a1f2e 75%, #0f1419 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
 }
+
+/* Burbujas del bot - Elegante gris con acentos */
 body[data-theme='dark'] .bubble.bot {
-  background: linear-gradient(120deg, #232526 60%, #414345 100%);
-  color: #e3e3e3;
-  border: 1px solid #33384d;
-  box-shadow: 0 2px 16px 0 rgba(30,40,60,0.18);
+  background: linear-gradient(135deg, #2a2d3a 0%, #3a3f4a 50%, #2a2d3a 100%);
+  color: #e8eaf6;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 20px 0 rgba(0, 0, 0, 0.3),
+    0 2px 8px 0 rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
+
+/* Burbujas del usuario - Gradiente moderno azul-cian */
 body[data-theme='dark'] .bubble.user {
-  background: linear-gradient(120deg, #3a3f5a 60%, #6a1b9a 100%);
-  color: #fff;
-  border: 1px solid #5e35b1;
-  box-shadow: 0 2px 16px 0 rgba(76,0,130,0.18);
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 25%, #06b6d4 50%, #3b82f6 75%, #1e3a8a 100%);
+  color: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 
+    0 4px 20px 0 rgba(59, 130, 246, 0.25),
+    0 2px 8px 0 rgba(6, 182, 212, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
+
+/* Colas de las burbujas */
 body[data-theme='dark'] .bubble.bot::after {
-  background: linear-gradient(120deg, #232526 60%, #414345 100%);
+  background: linear-gradient(135deg, #2a2d3a 0%, #3a3f4a 50%, #2a2d3a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -2px 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
+
 body[data-theme='dark'] .bubble.user::after {
-  background: linear-gradient(120deg, #3a3f5a 60%, #6a1b9a 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 25%, #06b6d4 50%, #3b82f6 75%, #1e3a8a 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 2px 2px 4px 0 rgba(59, 130, 246, 0.2);
+}
+
+/* Efectos hover mejorados para botones en modo oscuro */
+body[data-theme='dark'] .MuiButton-root:hover, 
+body[data-theme='dark'] .MuiIconButton-root:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Efectos especiales para elementos de Material-UI en modo oscuro */
+body[data-theme='dark'] .MuiPaper-root {
+  background: rgba(42, 45, 58, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.4),
+    0 2px 8px 0 rgba(255, 255, 255, 0.05);
+}
+
+body[data-theme='dark'] .MuiAppBar-root {
+  background: linear-gradient(135deg, rgba(15, 20, 25, 0.95) 0%, rgba(26, 31, 46, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 20px 0 rgba(0, 0, 0, 0.3),
+    0 2px 8px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Efectos de texto mejorados */
+body[data-theme='dark'] .MuiTypography-root {
+  color: #e8eaf6;
+}
+
+body[data-theme='dark'] .MuiTypography-h5,
+body[data-theme='dark'] .MuiTypography-h6 {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos de scroll personalizados */
+body[data-theme='dark'] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+body[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: rgba(42, 45, 58, 0.3);
+  border-radius: 4px;
+}
+
+body[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 100%);
 }
 
 /* Animaciones más suaves para mensajes */

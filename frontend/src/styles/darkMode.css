@@ -1,0 +1,208 @@
+/* ===== EFECTOS AVANZADOS PARA MODO OSCURO ===== */
+
+/* Efectos de partículas de fondo */
+body[data-theme='dark']::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  animation: particleFloat 20s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-20px) rotate(1deg); }
+  66% { transform: translateY(10px) rotate(-1deg); }
+}
+
+/* Efectos de brillo en elementos interactivos */
+body[data-theme='dark'] .MuiButton-root::before,
+body[data-theme='dark'] .MuiIconButton-root::before {
+  display: none; /* Desactivar efectos de brillo */
+}
+
+/* Efectos de neón para elementos importantes */
+body[data-theme='dark'] .bubble.user {
+  position: relative;
+}
+
+body[data-theme='dark'] .bubble.user::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6);
+  border-radius: 20px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+body[data-theme='dark'] .bubble.user:hover::before {
+  opacity: 0.3;
+}
+
+@keyframes neonPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.2; }
+}
+
+/* Efectos de profundidad para contenedores */
+body[data-theme='dark'] .MuiContainer-root {
+  position: relative;
+}
+
+body[data-theme='dark'] .MuiContainer-root::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%, rgba(6, 182, 212, 0.05) 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Efectos de texto con gradiente */
+body[data-theme='dark'] .MuiTypography-h4,
+body[data-theme='dark'] .MuiTypography-h5 {
+  background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 50%, #a855f7 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientText 3s ease infinite;
+}
+
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Efectos de hover mejorados para avatares */
+body[data-theme='dark'] .MuiAvatar-root {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+body[data-theme='dark'] .MuiAvatar-root::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #3b82f6, #06b6d4);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+body[data-theme='dark'] .MuiAvatar-root:hover::after {
+  opacity: 0.5;
+}
+
+body[data-theme='dark'] .MuiAvatar-root:hover {
+  transform: scale(1.1);
+}
+
+/* Efectos de carga mejorados */
+body[data-theme='dark'] .MuiCircularProgress-root {
+  /* Retirar efectos de sombra */
+}
+
+/* Efectos de transición suave para cambios de tema */
+body[data-theme='dark'] * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efectos de scroll personalizados para Firefox */
+body[data-theme='dark'] {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #2a2d3a;
+}
+
+/* Efectos de focus mejorados */
+body[data-theme='dark'] .MuiButton-root:focus-visible,
+body[data-theme='dark'] .MuiIconButton-root:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* Efectos de estado activo */
+body[data-theme='dark'] .MuiButton-root:active,
+body[data-theme='dark'] .MuiIconButton-root:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* Efectos de sombra dinámica */
+body[data-theme='dark'] .MuiPaper-root {
+  position: relative;
+}
+
+body[data-theme='dark'] .MuiPaper-root::before {
+  display: none; /* Desactivar efectos de sombra dinámica */
+}
+
+/* Efectos de texto con sombra */
+body[data-theme='dark'] .MuiTypography-body1 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos de bordes animados */
+body[data-theme='dark'] .MuiCard-root {
+  position: relative;
+  overflow: hidden;
+}
+
+body[data-theme='dark'] .MuiCard-root::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3b82f6, #06b6d4, transparent);
+  transition: left 0.5s ease;
+}
+
+body[data-theme='dark'] .MuiCard-root:hover::before {
+  left: 100%;
+}
+
+/* Efectos de vibración sutil en hover */
+@keyframes subtleShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+
+body[data-theme='dark'] .MuiIconButton-root:hover {
+  animation: subtleShake 0.3s ease-in-out;
+}
+
+/* Efectos de brillo en scroll */
+body[data-theme='dark'] .MuiBox-root::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  background-size: 200% 200%;
+  animation: scrollbarGlow 2s ease infinite;
+}
+
+@keyframes scrollbarGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+} 

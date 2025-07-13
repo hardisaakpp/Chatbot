@@ -6,6 +6,7 @@ import { ChatContainer } from './components/Chat/ChatContainer';
 import { useTheme } from './hooks/useTheme';
 import { useChat } from './hooks/useChat';
 import './App.css';
+import './styles/darkMode.css';
 
 function App() {
   const { isDark, theme, toggleDarkMode, getDarkModeIcon, getDarkModeLabel } = useTheme();
