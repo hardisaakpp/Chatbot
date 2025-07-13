@@ -36,6 +36,10 @@ source venv/bin/activate
 echo "📥 Instalando dependencias de Python..."
 pip install -r requirements.txt
 
+# Instalar spaCy y modelo de español
+echo "🤖 Instalando spaCy y modelo de español..."
+python scripts/install_spacy.py
+
 # Verificar si la base de datos existe
 if [ ! -f "backend/chatbot.db" ]; then
     echo "🗄️  Inicializando base de datos..."

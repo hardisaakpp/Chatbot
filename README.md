@@ -12,11 +12,13 @@ Un chatbot inteligente para asistencia académica con base de datos completa, an
 - **Panel de Administración**: Interfaz completa para gestionar datos
 
 ### 🎯 **Funcionalidades Avanzadas**
+- **Procesamiento de Lenguaje Natural**: Usando spaCy para análisis semántico avanzado
 - **Sistema de Feedback**: Los usuarios pueden calificar respuestas (1-5 estrellas)
 - **Sugerencias Inteligentes**: Preguntas recomendadas basadas en el historial
 - **Analytics Detallados**: Dashboard completo con métricas y tendencias
 - **Mejora Continua**: Las respuestas mejoran automáticamente con el feedback
 - **Categorización**: Organización por temas (Matemáticas, Historia, Ciencia, etc.)
+- **Extracción de Entidades**: Identificación automática de conceptos y materias
 
 ### 📊 **Analytics y Reportes**
 - **Métricas en Tiempo Real**: Usuarios, conversaciones, mensajes
@@ -46,6 +48,9 @@ source venv/bin/activate  # En Windows: venv\Scripts\activate
 
 # Instalar dependencias
 pip install -r requirements.txt
+
+# Instalar spaCy y modelo de español
+python scripts/install_spacy.py
 
 # Configurar variables de entorno
 cp env.example .env
@@ -87,7 +92,7 @@ ChatbotBasico/
 │   ├── routes/
 │   │   └── chatbot_routes.py  # Rutas del chatbot
 │   └── utils/
-│       └── preprocessing.py   # Procesamiento de texto
+│       └── preprocessing.py   # Procesamiento de texto con spaCy
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -237,9 +242,52 @@ python -m pytest tests/unit/
 python -m pytest tests/integration/
 ```
 
+## 🤖 Procesamiento de Lenguaje Natural con spaCy
+
+### Características de spaCy
+- **Modelo de Español**: `es_core_news_sm` para procesamiento en español
+- **Análisis Semántico**: Similitud entre textos usando vectores de palabras
+- **Extracción de Entidades**: Identificación automática de conceptos y materias
+- **Análisis de Estructura**: Sujeto, verbo, objeto y dependencias gramaticales
+- **Lematización Avanzada**: Normalización de palabras para mejor matching
+
+### Funcionalidades Implementadas
+- **Preprocesamiento Inteligente**: Tokenización, lematización y filtrado automático
+- **Detección de Intenciones**: Saludos, preguntas, agradecimientos, despedidas
+- **Cálculo de Similitud**: Combinación de similitud semántica y léxica
+- **Extracción de Palabras Clave**: Sustantivos, verbos y nombres propios relevantes
+- **Análisis de Tipos de Pregunta**: Qué, cómo, cuándo, dónde, por qué, cuál
+
+### Scripts de Instalación y Prueba
+```bash
+# Instalar spaCy y modelo de español
+python scripts/install_spacy.py
+
+# Probar la instalación
+python scripts/test_spacy.py
+```
+
+### Uso en el Código
+```python
+from backend.utils.preprocessing import processor
+
+# Procesar texto
+tokens = processor.preprocess("¿Qué es la inteligencia artificial?")
+
+# Extraer palabras clave
+keywords = processor.extract_keywords("Explica las matemáticas")
+
+# Calcular similitud
+similarity = processor.calculate_similarity("IA", "inteligencia artificial")
+
+# Extraer intención
+intent = processor.extract_intent("Hola, ¿cómo estás?")
+```
+
 ## 📈 Roadmap
 
 ### Próximas Funcionalidades
+- [x] **Procesamiento de Lenguaje Natural**: spaCy implementado
 - [ ] **Integración con IA**: OpenAI, GPT, etc.
 - [ ] **Multilingüe**: Soporte para múltiples idiomas
 - [ ] **Chat en Tiempo Real**: WebSockets para chat en vivo
