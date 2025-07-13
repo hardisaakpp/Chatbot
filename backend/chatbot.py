@@ -1,5 +1,5 @@
 import json
-from preprocessing import preprocess
+from backend.utils.preprocessing import preprocess
 import tkinter as tk
 from tkinter import scrolledtext
 

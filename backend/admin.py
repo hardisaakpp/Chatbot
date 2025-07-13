@@ -7,7 +7,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, login_required
 from flask import redirect, url_for, flash, request
-from models import db, User, Category, Question, Conversation, Message, Response, SystemLog, ChatbotStats
+from backend.models import db, User, Category, Question, Conversation, Message, Response, SystemLog, ChatbotStats
 
 class SecureModelView(ModelView):
     """Vista base segura para el panel de administración"""

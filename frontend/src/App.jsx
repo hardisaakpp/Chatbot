@@ -16,7 +16,8 @@ import {
   Tooltip,
   CssBaseline,
   useMediaQuery,
-  Switch
+  Switch,
+  CircularProgress
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
@@ -43,6 +44,7 @@ function App() {
     },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
   // Dark mode: sistema y manual
@@ -73,20 +75,64 @@ function App() {
     }
   }, [messages, isDark]);
 
-  const handleSend = () => {
-    if (input.trim() === '') return;
-    setMessages(prevMessages => [...prevMessages, { from: 'user', text: input }]);
+  const sendMessageToBackend = async (message) => {
+    try {
+      setIsLoading(true);
+      
+      const formData = new FormData();
+      formData.append('user_input', message);
+      
+      const response = await fetch('http://localhost:5002/get_response', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      return data.response;
+    } catch (error) {
+      console.error('Error enviando mensaje:', error);
+      return 'Lo siento, tuve un problema procesando tu pregunta. ¿Podrías intentar de nuevo?';
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSend = async () => {
+    if (input.trim() === '' || isLoading) return;
+    
+    const userMessage = input.trim();
+    setMessages(prevMessages => [...prevMessages, { from: 'user', text: userMessage }]);
     setInput('');
-    // Aquí luego se conectará con el backend Flask
+    
+    // Enviar mensaje al backend y obtener respuesta
+    const botResponse = await sendMessageToBackend(userMessage);
+    setMessages(prevMessages => [...prevMessages, { from: 'bot', text: botResponse }]);
   };
 
   const handleInputKeyDown = (e) => {
-    if (e.key === 'Enter') handleSend();
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
-  const askQuestion = (question) => {
+  const askQuestion = async (question) => {
+    if (isLoading) return;
+    
     setMessages(prevMessages => [...prevMessages, { from: 'user', text: question }]);
-    // Aquí luego se conectará con el backend Flask
+    
+    // Enviar pregunta al backend y obtener respuesta
+    const botResponse = await sendMessageToBackend(question);
+    setMessages(prevMessages => [...prevMessages, { from: 'bot', text: botResponse }]);
   };
 
   const clearChat = () => {
@@ -232,9 +278,15 @@ function App() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleInputKeyDown}
                 size="small"
+                disabled={isLoading}
               />
-              <IconButton color="primary" onClick={handleSend} sx={{ height: 40, width: 40 }}>
-                <SendIcon />
+              <IconButton 
+                color="primary" 
+                onClick={handleSend} 
+                sx={{ height: 40, width: 40 }}
+                disabled={isLoading || input.trim() === ''}
+              >
+                {isLoading ? <CircularProgress size={20} /> : <SendIcon />}
               </IconButton>
             </Box>
             <Divider />
@@ -245,6 +297,7 @@ function App() {
                 size="small"
                 startIcon={<DeleteIcon />}
                 onClick={clearChat}
+                disabled={isLoading}
               >
                 Limpiar chat
               </Button>

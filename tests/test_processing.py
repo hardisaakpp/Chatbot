@@ -4,7 +4,7 @@ Script de prueba para demostrar las mejoras en el procesamiento del chatbot
 """
 
 import json
-from preprocessing import processor, get_best_response
+from backend.utils.preprocessing import processor, get_best_response
 
 def test_processing_improvements():
     """Demostrar las mejoras en el procesamiento"""

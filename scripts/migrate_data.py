@@ -5,9 +5,14 @@ Script para migrar datos del archivo JSON a la base de datos SQLite
 
 import json
 import os
+import sys
 from datetime import datetime
-from models import db, Category, Question, User
-from config import config
+
+# Agregar el directorio raíz al path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from backend.config import config
+from backend.models import db, Category, Question, User
 
 def create_app():
     """Crear aplicación Flask para la migración"""
@@ -23,7 +28,8 @@ def create_app():
 def load_json_data():
     """Cargar datos del archivo JSON"""
     try:
-        with open('responses.json', 'r', encoding='utf-8') as f:
+        json_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend', 'responses.json')
+        with open(json_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except FileNotFoundError:
         print("❌ Error: No se encontró el archivo responses.json")

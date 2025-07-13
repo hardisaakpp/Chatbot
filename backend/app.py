@@ -4,11 +4,12 @@ import os
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from config import config
-from models import db, User
-from preprocessing import processor
-from database_service import DatabaseService
-from admin import init_admin
+from flask_cors import CORS
+from backend.config import config
+from backend.models import db, User
+from backend.utils.preprocessing import processor
+from backend.database.database_service import DatabaseService
+from backend.admin import init_admin
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -34,6 +35,7 @@ def create_app(config_name='development'):
     return app
 
 app = create_app()
+CORS(app, origins=['http://localhost:5173', 'http://127.0.0.1:5173'])  # Habilitar CORS para toda la app
 login_manager.init_app(app)
 setattr(login_manager, 'login_view', 'login')
 setattr(login_manager, 'login_message', 'Debes iniciar sesión para acceder a esta página.')
@@ -74,12 +76,7 @@ def get_response(user_input):
 
 @app.route('/')
 def home():
-    """Página principal del chatbot"""
-    # Generar session_id si no existe
-    if 'session_id' not in session:
-        session['session_id'] = f"session_{int(datetime.utcnow().timestamp())}"
-    
-    return render_template('index.html')
+    return jsonify({"message": "API del chatbot funcionando"})
 
 @app.route('/get_response', methods=['POST'])
 def chatbot_response():
@@ -248,5 +245,6 @@ def setup_database():
         logger.error(f"Error configurando base de datos: {e}")
 
 if __name__ == '__main__':
-    setup_database()
+    with app.app_context():
+        setup_database()
     app.run(debug=True, port=5002)

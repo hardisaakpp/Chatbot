@@ -7,8 +7,8 @@ import time
 import json
 from datetime import datetime, date
 from typing import List, Dict, Optional, Tuple
-from models import db, Question, Category, Conversation, Message, User, SystemLog, ChatbotStats
-from preprocessing import processor
+from backend.models import db, Question, Category, Conversation, Message, User, SystemLog, ChatbotStats
+from backend.utils.preprocessing import processor
 
 class DatabaseService:
     """Servicio para manejar operaciones de base de datos"""

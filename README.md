@@ -1,214 +1,137 @@
-# Chatbot Básico
+# Chatbot Académico
 
-Un chatbot inteligente desarrollado con Flask que utiliza procesamiento avanzado de lenguaje natural para responder preguntas frecuentes de manera más precisa y contextual.
+Un chatbot inteligente desarrollado con React (frontend) y Flask (backend) que puede responder preguntas sobre temas académicos y tecnológicos.
 
 ## 🚀 Características
 
-### **Interfaz de Usuario**
-- ✅ Interfaz web moderna y responsive
-- ✅ Animaciones de carga y efectos visuales
-- ✅ Historial de conversación con timestamps
-- ✅ Botones de preguntas rápidas
-- ✅ Contador de mensajes en tiempo real
-- ✅ Diseño adaptativo para móviles y tablets
+- **Interfaz moderna**: Diseño responsive con Material-UI
+- **Base de datos SQLite**: Almacenamiento persistente de preguntas y respuestas
+- **Procesamiento de lenguaje natural**: Análisis de intenciones y palabras clave
+- **Sistema de categorías**: Organización temática de preguntas
+- **Panel de administración**: Gestión de preguntas y estadísticas
+- **Modo oscuro/claro**: Interfaz adaptable a preferencias del usuario
 
-### **Procesamiento Avanzado**
-- ✅ **Detección de intenciones**: Saludos, despedidas, agradecimientos, preguntas
-- ✅ **Manejo de sinónimos**: Reconocimiento de variaciones y abreviaciones
-- ✅ **Corrección de errores**: Tolerancia a errores tipográficos
-- ✅ **Extracción de palabras clave**: Identificación automática de términos importantes
-- ✅ **Cálculo de similitud**: Múltiples algoritmos para mejor matching
-- ✅ **Normalización de texto**: Lematización, stemming y limpieza
-- ✅ **Respuestas contextuales**: Sugerencias para preguntas no encontradas
+## 📋 Requisitos
 
-### **Funcionalidades Técnicas**
-- ✅ API REST completa con endpoints adicionales
-- ✅ Logging detallado para debugging
-- ✅ Manejo robusto de errores
-- ✅ Estadísticas del sistema
-- ✅ Análisis de texto en tiempo real
+- Python 3.8+
+- Node.js 18+
+- npm o yarn
 
 ## 🛠️ Instalación
 
-1. **Clona el repositorio:**
+### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/hardisaakpp/Chatbot.git
-cd Chatbot
+git clone <url-del-repositorio>
+cd ChatbotBasico
 ```
 
-2. **Crea un entorno virtual:**
+### 2. Configurar el backend
 ```bash
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-```
-
-3. **Instala las dependencias:**
-```bash
+# Instalar dependencias de Python
 pip install -r requirements.txt
+
+# Inicializar la base de datos
+python scripts/migrate_data.py
 ```
 
-## 🚀 Uso
-
-1. **Ejecuta la aplicación:**
+### 3. Configurar el frontend
 ```bash
+cd frontend
+npm install
+```
+
+## 🚀 Ejecución
+
+### 1. Iniciar el backend
+```bash
+cd backend
 python app.py
 ```
+El backend estará disponible en: http://localhost:5002
 
-2. **Abre tu navegador y ve a:** `http://localhost:5002`
+### 2. Iniciar el frontend
+```bash
+cd frontend
+npm run dev
+```
+El frontend estará disponible en: http://localhost:5173
 
-3. **¡Interactúa con el chatbot!** Prueba:
-   - Preguntas directas: "¿Qué es la inteligencia artificial?"
-   - Abreviaciones: "¿Qué es AI?"
-   - Variaciones: "Explica machine learning"
-   - Saludos: "Hola"
-   - Despedidas: "Adiós"
+## 📖 Uso
 
-## 📊 Mejoras en el Procesamiento
+### Para usuarios
+1. Abre http://localhost:5173 en tu navegador
+2. Escribe tu pregunta en el campo de texto
+3. Presiona Enter o haz clic en el botón de enviar
+4. El chatbot responderá basándose en su base de conocimientos
 
-### **Sistema de Sinónimos**
-El chatbot reconoce automáticamente variaciones y abreviaciones:
+### Para administradores
+1. Accede a http://localhost:5002/admin
+2. Usuario: `admin`
+3. Contraseña: `admin123`
+4. Gestiona preguntas, categorías y revisa estadísticas
 
-| Término | Sinónimos Reconocidos |
-|---------|----------------------|
-| AI | inteligencia artificial, ia, artificial intelligence |
-| ML | machine learning, aprendizaje automático |
-| DL | deep learning, aprendizaje profundo |
-| NLP | procesamiento de lenguaje natural |
-| BD | base de datos, database |
-| IoT | internet de las cosas, internet of things |
-| AR | realidad aumentada, augmented reality |
-| VR | realidad virtual, virtual reality |
-
-### **Detección de Intenciones**
-- **Saludos**: "hola", "buenos días", "saludos"
-- **Despedidas**: "adiós", "hasta luego", "nos vemos"
-- **Agradecimientos**: "gracias", "thank you"
-- **Preguntas**: Cualquier consulta sobre temas académicos
-
-### **Algoritmos de Similitud**
-- **Jaccard Similarity**: Para comparación de conjuntos de tokens
-- **Cosine Similarity**: Para similitud vectorial
-- **Sequence Matcher**: Para similitud de caracteres
-- **Promedio ponderado**: Combinación de múltiples métodos
-
-## 🏗️ Estructura del Proyecto
+## 🗂️ Estructura del proyecto
 
 ```
 ChatbotBasico/
-├── app.py                 # Aplicación principal Flask
-├── preprocessing.py       # Procesamiento avanzado de NLP
-├── responses.json         # Base de datos de respuestas
-├── test_processing.py     # Script de pruebas
-├── static/                # Archivos estáticos
-│   ├── styles.css         # Estilos modernos y responsive
-│   └── script.js          # JavaScript con animaciones
-├── templates/
-│   └── index.html         # Interfaz de usuario mejorada
-├── requirements.txt       # Dependencias del proyecto
-└── README.md             # Este archivo
+├── backend/
+│   ├── app.py                 # Aplicación principal Flask
+│   ├── models.py              # Modelos de base de datos
+│   ├── config.py              # Configuración
+│   ├── database/
+│   │   └── database_service.py # Servicio de base de datos
+│   ├── services/
+│   │   └── chatbot_service.py # Servicio del chatbot
+│   ├── utils/
+│   │   └── preprocessing.py   # Procesamiento de texto
+│   └── responses.json         # Datos iniciales
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx            # Componente principal
+│   │   └── main.jsx           # Punto de entrada
+│   └── package.json
+├── scripts/
+│   └── migrate_data.py        # Script de migración
+└── tests/                     # Pruebas unitarias
 ```
 
-## 🔧 API Endpoints
+## 🔧 Configuración
 
-### **POST /get_response**
-Obtiene respuesta del chatbot
-```json
-{
-  "user_input": "¿Qué es la inteligencia artificial?"
-}
+### Variables de entorno
+Crea un archivo `.env` en el directorio raíz:
+
+```env
+SECRET_KEY=tu-clave-secreta-aqui
+DATABASE_URL=sqlite:///chatbot.db
+LOG_LEVEL=INFO
 ```
 
-### **POST /api/analyze**
-Análisis completo del texto
-```json
-{
-  "text": "¿Qué es machine learning?"
-}
-```
-
-### **GET /api/stats**
-Estadísticas del sistema
-```json
-{
-  "total_questions": 50,
-  "total_greetings": 5,
-  "total_farewells": 5,
-  "processor_info": {
-    "synonyms_count": 21,
-    "stop_words_count": 200
-  }
-}
-```
+### Personalización
+- **Preguntas**: Agrega nuevas preguntas desde el panel de administración
+- **Categorías**: Crea nuevas categorías para organizar el contenido
+- **Estilo**: Modifica los estilos en `frontend/src/App.css`
 
 ## 🧪 Pruebas
 
-Ejecuta el script de pruebas para ver las mejoras en acción:
-
 ```bash
-python test_processing.py
+# Ejecutar pruebas del backend
+python -m pytest tests/
+
+# Ejecutar pruebas del frontend
+cd frontend
+npm test
 ```
 
-Este script demuestra:
-- Detección de intenciones
-- Manejo de sinónimos
-- Corrección de errores tipográficos
-- Cálculo de similitud
-- Extracción de palabras clave
+## 📊 Estadísticas
 
-## 🎯 Personalización
+El sistema recopila automáticamente:
+- Número total de conversaciones
+- Mensajes por sesión
+- Tiempo de respuesta promedio
+- Puntuación de confianza
+- Preguntas más populares
 
-### **Agregar Nuevas Respuestas**
-Edita `responses.json`:
-
-```json
-{
-  "preguntas_frecuentes": {
-    "tu pregunta": "tu respuesta",
-    "otra pregunta": "otra respuesta"
-  }
-}
-```
-
-### **Agregar Sinónimos**
-Modifica `preprocessing.py`:
-
-```python
-self.synonyms = {
-    'nuevo_termino': ['sinonimo1', 'sinonimo2', 'sinonimo3']
-}
-```
-
-### **Ajustar Umbrales**
-Modifica los parámetros de similitud en `preprocessing.py`:
-
-```python
-threshold: float = 0.3  # Umbral de confianza
-```
-
-## 📈 Tecnologías Utilizadas
-
-- **Backend**: Flask (Python)
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **NLP**: NLTK, Procesamiento de texto avanzado
-- **Algoritmos**: Jaccard, Cosine, Sequence Matcher
-- **UI/UX**: Font Awesome, Google Fonts, Animaciones CSS
-
-## 🔮 Próximas Mejoras
-
-- [ ] Integración con APIs de IA externas
-- [ ] Base de datos para persistencia
-- [ ] Sistema de usuarios y personalización
-- [ ] Análisis de sentimientos
-- [ ] Soporte multiidioma
-- [ ] Chat en tiempo real con WebSockets
-
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia MIT.
-
-## 🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas! Por favor:
+## 🤝 Contribución
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -216,11 +139,22 @@ Este proyecto está bajo la Licencia MIT.
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📞 Contacto
+## 📝 Licencia
 
-- **Desarrollador**: Carlos Ortiz
-- **Repositorio**: [https://github.com/hardisaakpp/Chatbot](https://github.com/hardisaakpp/Chatbot)
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
----
+## 🆘 Soporte
 
-**¡Disfruta usando tu chatbot inteligente! 🤖✨**
+Si encuentras algún problema:
+1. Revisa los logs del backend en la consola
+2. Verifica que ambos servicios estén ejecutándose
+3. Asegúrate de que la base de datos esté inicializada
+4. Revisa la consola del navegador para errores del frontend
+
+## 🔄 Actualizaciones
+
+Para actualizar el sistema:
+1. Detén ambos servicios
+2. Ejecuta `git pull` para obtener los últimos cambios
+3. Ejecuta `python scripts/migrate_data.py` si hay cambios en la base de datos
+4. Reinicia ambos servicios
