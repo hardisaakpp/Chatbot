@@ -1,0 +1,42 @@
+{
+  "saludos": [
+    "Hola, ¿en qué puedo ayudarte?",
+    "Hola, bienvenido. ¿Cuál es tu consulta?",
+    "Saludos, ¿en qué necesitas asistencia?"
+  ],
+  "despedidas": [
+    "Hasta luego, ¡mucho éxito en tus estudios!",
+    "Adiós, ¡que tengas un gran día!",
+    "Nos vemos pronto, ¡sigue aprendiendo!"
+  ],
+  "preguntas_frecuentes": {
+    "que es inteligencia artificial": "La inteligencia artificial es la capacidad de una máquina para imitar la inteligencia humana, realizando tareas como el aprendizaje y la toma de decisiones.",
+    "que es nltk": "NLTK (Natural Language Toolkit) es una biblioteca en Python utilizada para el procesamiento de lenguaje natural.",
+    "como mejorar mis habitos de estudio": "Para mejorar tus hábitos de estudio, establece un horario regular, encuentra un lugar tranquilo, usa técnicas de memorización y toma descansos frecuentes.",
+    "que es machine learning": "Machine learning es una rama de la inteligencia artificial que permite a las máquinas aprender a partir de datos sin ser programadas explícitamente.",
+    "que es deep learning": "Deep learning es un subconjunto de machine learning que utiliza redes neuronales artificiales para analizar grandes volúmenes de datos.",
+    "que es el procesamiento de lenguaje natural": "El procesamiento de lenguaje natural es un campo de la inteligencia artificial que permite a las máquinas entender, interpretar y generar lenguaje humano.",
+    "como aprender programacion": "Para aprender programación, comienza con un lenguaje fácil como Python, sigue tutoriales en línea, practica resolviendo problemas y trabaja en proyectos propios.",
+    "que es un algoritmo": "Un algoritmo es un conjunto de instrucciones ordenadas y finitas que resuelven un problema o realizan una tarea.",
+    "que es la programacion orientada a objetos": "La programación orientada a objetos es un paradigma de programación basado en la creación de objetos que contienen datos y métodos para manipular esos datos.",
+    "cuales son los lenguajes de programacion mas populares": "Algunos de los lenguajes de programación más populares son Python, JavaScript, Java, C++, y C#.",
+    "que es una base de datos": "Una base de datos es un sistema que permite almacenar, organizar y gestionar grandes volúmenes de información de manera estructurada.",
+    "que es SQL": "SQL (Structured Query Language) es un lenguaje de programación utilizado para gestionar bases de datos relacionales.",
+    "que es la ciberseguridad": "La ciberseguridad es el conjunto de técnicas y medidas utilizadas para proteger sistemas informáticos y redes de ataques maliciosos.",
+    "que es un sistema operativo": "Un sistema operativo es un software que gestiona los recursos de hardware y software de una computadora, como Windows, macOS y Linux.",
+    "como mejorar mi productividad estudiando": "Para mejorar tu productividad, organiza un horario de estudio, evita distracciones, usa técnicas como Pomodoro y mantén una mentalidad positiva.",
+    "que es la ciencia de datos": "La ciencia de datos es un campo interdisciplinario que utiliza métodos estadísticos, algoritmos y tecnología para extraer conocimiento de los datos.",
+    "que es big data": "Big Data se refiere al manejo y análisis de grandes volúmenes de datos que no pueden ser procesados de manera convencional debido a su tamaño y complejidad.",
+    "que es el internet de las cosas": "El Internet de las Cosas (IoT) es una red de dispositivos conectados a Internet que pueden recopilar y compartir datos en tiempo real.",
+    "que es blockchain": "Blockchain es una tecnología de registro distribuido que garantiza la seguridad y transparencia en transacciones digitales sin necesidad de intermediarios.",
+    "como empezar en ciberseguridad": "Para comenzar en ciberseguridad, estudia fundamentos de redes y sistemas operativos, aprende sobre ataques comunes y practica con herramientas de seguridad.",
+    "que es un lenguaje de bajo nivel": "Un lenguaje de bajo nivel es un tipo de lenguaje de programación que está más cerca del lenguaje de máquina, como el ensamblador.",
+    "que es un lenguaje de alto nivel": "Un lenguaje de alto nivel es un lenguaje de programación más cercano al lenguaje humano, como Python o Java, facilitando la programación.",
+    "que es la computacion en la nube": "La computación en la nube es un modelo de prestación de servicios informáticos a través de Internet, ofreciendo almacenamiento y procesamiento de datos sin depender de hardware local.",
+    "que es la ingenieria de software": "La ingeniería de software es la disciplina que estudia los principios y técnicas para diseñar, desarrollar y mantener software de alta calidad.",
+    "que es la programacion funcional": "La programación funcional es un paradigma de programación basado en el uso de funciones puras y la inmutabilidad de datos.",
+    "que es el aprendizaje supervisado": "El aprendizaje supervisado es un tipo de machine learning en el que el modelo se entrena con datos etiquetados para hacer predicciones futuras.",
+    "que es el aprendizaje no supervisado": "El aprendizaje no supervisado es un tipo de machine learning donde el modelo encuentra patrones en los datos sin etiquetas previas.",
+    "que es la realidad aumentada": "La realidad aumentada es una tecnología que superpone elementos digitales en el mundo real a través de dispositivos como teléfonos o gafas inteligentes."
+  }
+}
