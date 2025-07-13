@@ -74,4 +74,4 @@ Para agregar nuevas preguntas y respuestas, edita el archivo `responses.json`:
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. 
+Este proyecto está bajo la Licencia MIT.
